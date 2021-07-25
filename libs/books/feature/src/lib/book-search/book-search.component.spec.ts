@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedTestingModule } from '@tmo/shared/testing';
 
@@ -26,36 +26,32 @@ describe('BookSearchComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should test search form validity', () => {
-    const form = component.searchForm;
-    expect(form.valid).toBeFalsy();
+  it("should search book when searchBooks() is called", fakeAsync(()=>{
+    component.ngOnInit();
+    const searchBook = jest.spyOn(component, "searchBooks");
 
-    const term = component.searchForm.controls['term'];
-    term.setValue('javascript');
+    component.searchForm.setValue({term: "javascript"});
+    
+    tick(500);
+    
+    expect(searchBook).toHaveBeenCalled();
+  }));
 
-    expect(form.valid).toBeTruthy();
+  it("should search book when book search value is javascript",  () => {
+    component.searchExample();
+
+    expect(component.searchForm.value.term).toEqual("javascript");
   });
 
-  it('should disable the search button when search term is not provided', () => {
-    const term = component.searchForm.controls['term'];
-    term.setValue(null);
+  it('should not search book when searchBooks() is called and time spent after entering search term is less than 500ms', fakeAsync(() => {
+    component.ngOnInit();
+    const searchBook = jest.spyOn(component, "searchBooks");
 
-    const searchBtn = fixture.nativeElement.querySelector(
-      '[data-testing="search-button"]'
-    );
+    component.searchForm.setValue({term: "javascript"});
 
-    expect(searchBtn.disabled).toBeTruthy();
-  });
+    tick(400);
 
-  it('should enable the search button when search term is provided', () => {
-    const term = component.searchForm.controls['term'];
-    term.setValue('javascript');
-    fixture.detectChanges();
-
-    const searchBtn = fixture.nativeElement.querySelector(
-      '[data-testing="search-button"]'
-    );
-
-    expect(searchBtn.disabled).toBeFalsy();
-  });
+    expect(searchBook).not.toHaveBeenCalled();
+    discardPeriodicTasks();
+  }));
 });
