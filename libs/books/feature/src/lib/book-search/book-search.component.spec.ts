@@ -11,6 +11,7 @@ describe('BookSearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      declarations: [BookSearchComponent],
       imports: [BooksFeatureModule, NoopAnimationsModule, SharedTestingModule]
     }).compileComponents();
   }));
