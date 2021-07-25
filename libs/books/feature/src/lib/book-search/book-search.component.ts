@@ -40,8 +40,13 @@ export class BookSearchComponent {
   }
 
   searchBooks = () => {
-    this.searchTerm
-      ? this.store.dispatch(searchBooks({ term: this.searchTerm }))
-      : this.store.dispatch(clearSearch());
+    if (this.searchTerm) {
+      this.store.dispatch(searchBooks({ term: this.searchTerm }))
+    }
+  }
+
+  resetSearch() {
+    this.searchForm.controls.term.setValue('');
+    this.store.dispatch(clearSearch());
   }
 }

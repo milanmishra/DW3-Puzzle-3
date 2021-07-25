@@ -14,12 +14,22 @@
       [disabled]="!searchForm.valid"
       data-testing="search-button"
     >
-      <mat-icon aria-label="Search icon">{{ constants.CONSTANTS.SEARCH  }}</mat-icon>
+      <mat-icon aria-label="Search icon">{{
+        constants.CONSTANTS.SEARCH
+      }}</mat-icon></button
+    ><button
+      mat-icon-button
+      matSuffix
+      aria-label="Reset Search"
+      data-testing="clear-button"
+      (click)="resetSearch()"
+    >
+      <mat-icon>clear</mat-icon>
     </button>
   </mat-form-field>
 </form>
 
-<ng-container *ngIf="searchTerm; else empty">
+<ng-container *ngIf="(books$ | async).length; else empty">
   <div class="book-grid">
     <div class="book" data-testing="book-item" *ngFor="let b of books$ | async">
       <div class="book-title">
@@ -27,16 +37,14 @@
       </div>
       <div class="book-content">
         <div class="book-content-cover">
-          <img
-            src="{{ b.coverUrl }}"
-            alt="Book image"
-            title="{{ b.title }}"
-          />
+          <img src="{{ b.coverUrl }}" alt="Book image" title="{{ b.title }}" />
         </div>
         <div class="book-content-info">
           <div>
             <strong>{{ constants.CONSTANTS.AUTHOR }}:</strong>
-            {{ b.authors.join(',') ? b.authors.join(',') : 'No Author mentioned' }}
+            {{
+              b.authors.join(',') ? b.authors.join(',') : 'No Author mentioned'
+            }}
           </div>
           <div>
             <strong>{{ constants.CONSTANTS.PUBLISHER }}:</strong>
@@ -63,6 +71,7 @@
               [attr.aria-label]="'Add ' + b.title + ' to reading list'"
               [disabled]="b.isAdded"
               aria-label="want to read button"
+              data-testing="want-to-read-btn"
             >
               {{ constants.CONSTANTS.WANT_TO_READ }}
             </button>
