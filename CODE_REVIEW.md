@@ -191,6 +191,37 @@ which contains both the frontend and the backend of the application in one place
 
         Fixed the test cases for reading-list.reducer.ts
 
+    12. File: book-search.component.html
+
+        Author name, Publisher name, Published Date and Descriptions are displayed empty for some books
+        in the book search list. 
+
+        ```
+        For example : Compliance Test Reports - KWIC Index --> Author's and Publisher's name are missing.
+                      Software Testing --> Description is missing.
+                      test2 --> Date is missing.
+        ```
+        
+        For better user experience, we should always provide an alternate message if the information is
+        not available or mentioned.
+        Fixed this issue by using ternary operator wherever applicable.
+
+        ```
+                {{ b.publisher ? b.publisher : 'No Publisher mentioned' }}
+                {{ b.authors.join(',') ? b.authors.join(',') : 'No Author mentioned' }}
+                {{ b.description ? b.description : 'No Description mentioned' }}
+                {{ !b.publishedDate ? 'No Date mentioned' : (b.publishedDate | date: 'dd/MM/yyyy') }}
+        ```
+
+        Fixed the same issue in file: reading-list.component.html 
+        
+        ```
+                {{ b.authors.join(',') ? b.authors.join(',') : 'No Author mentioned' }}
+        ```
+
+
+
+
 
 ---------------------------------------------------------------------------------------------------------
 

@@ -12,6 +12,7 @@
       matSuffix
       aria-label="Search button"
       [disabled]="!searchForm.valid"
+      data-testing="search-button"
     >
       <mat-icon aria-label="Search icon">{{ constants.CONSTANTS.SEARCH  }}</mat-icon>
     </button>
@@ -34,16 +35,26 @@
         </div>
         <div class="book-content-info">
           <div>
-            <strong>{{ constants.CONSTANTS.AUTHOR  }}:</strong> {{ b.authors.join(',') }}
+            <strong>{{ constants.CONSTANTS.AUTHOR }}:</strong>
+            {{ b.authors.join(',') ? b.authors.join(',') : 'No Author mentioned' }}
           </div>
           <div>
-            <strong>{{ constants.CONSTANTS.PUBLISHER  }}:</strong> {{ b.publisher }}
+            <strong>{{ constants.CONSTANTS.PUBLISHER }}:</strong>
+            {{ b.publisher ? b.publisher : 'No Publisher mentioned' }}
           </div>
           <div>
-            <strong>{{ constants.CONSTANTS.PUBLISHED  }}:</strong>
-            {{ b.publishedDate | date: 'dd/MM/yyyy' }}
+            <strong>{{ constants.CONSTANTS.PUBLISHED }}:</strong>
+            {{
+              !b.publishedDate
+                ? 'No Date mentioned'
+                : (b.publishedDate | date: 'dd/MM/yyyy')
+            }}
           </div>
-          <p [innerHTML]="b.description"></p>
+          <p
+            [innerHTML]="
+              b.description ? b.description : 'No Description available'
+            "
+          ></p>
           <div>
             <button
               mat-flat-button

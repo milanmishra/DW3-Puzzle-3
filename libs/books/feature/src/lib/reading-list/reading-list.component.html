@@ -15,7 +15,7 @@
     <div class="reading-list-item-details">
       <strong class="reading-list-item-details-title">{{ b.title }}</strong>
       <div class="reading-list-item-details-author">
-        {{ b.authors.join(',') }}
+        {{ b.authors.join(',') ? b.authors.join(',') : 'No Author mentioned' }}
       </div>
     </div>
     <div>
